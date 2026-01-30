@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang=”en”>
+<head>
+    <meta charset=”UTF-8”>
+    <meta name=”viewport” content=”width=device-width, initial-scale=1.0”>
+    <title>Goasis Sanctum | Verification</title>
+    <script src=https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js></script>
+    <style>
+        :root { --neon: #00ffff; --bg: #050505; }
+        Body { background: var(--bg); color: var(--neon); font-family: ‘Courier New’, monospace; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; text-transform: uppercase; }
+        .visa-container { border: 1px solid var(--neon); padding: 40px; text-align: center; box-shadow: 0 0 20px rgba(0,255,255,0.2); background: rgba(0,255,255,0.02); }
+        .glitch { font-size: 2.5rem; font-weight: bold; letter-spacing: 8px; margin-bottom: 20px; text-shadow: 0 0 10px var(--neon); }
+        .status { font-size: 0.8rem; margin: 10px 0; opacity: 0.7; }
+        .btn { display: inline-block; margin-top: 20px; padding: 15px 30px; border: 1px solid var(--neon); color: var(--neon); text-decoration: none; cursor: pointer; background: none; font-size: 1rem; }
+        .btn:hover { background: var(--neon); color: #000; box-shadow: 0 0 15px var(--neon); }
+        .hidden { display: none; }
+        #wallet-addr { font-size: 0.6rem; margin-top: 10px; color: #555; }
+    </style>
+</head>
+<body>
+    <div class=”visa-container”>
+        <div class=”glitch”>GOASIS</div>
+        <div class=”status”>GATEWAY: LOCKED [FEBRUARY 1, 20:00 WAT]</div>
+        <div class=”status”>COUNTDOWN: <span id=”timer”>--:--:--</span></div>
+        <button id=”connect-btn” class=”btn” onclick=”connectWallet()”>CONNECT SOLANA WALLET</button>
+        <div id=”enter-zone” class=”hidden”>
+            <div id=”wallet-addr”></div>
+            <a href=”world.html” class=”btn”>ENTER THE SANCTUM</a>
+        </div>
+        <a href=https://t.me/GoasisProtocol target=”_blank” style=”display:block; margin-top:20px; color:var(--neon); font-size:0.7rem; text-decoration:none; opacity:0.5;”>[ TELEGRAM COMMAND CENTER ]</a>
+    </div>
+
+    <script>
+        Function updateTimer() {
+            Const launch = new Date(“February 1, 2026 20:00:00”).getTime();
+            Const now = new Date().getTime();
+            Const diff = launch – now;
+            If (diff <= 0) { document.getElementById(‘timer’).innerText = “LIVE”; return; }
+            Const d = Math.floor(diff / 86400000);
+            Const h = Math.floor((diff % 86400000) / 3600000);
+            Const m = Math.floor((diff % 3600000) / 60000);
+            Const s = Math.floor((diff % 60000) / 1000);
+            Document.getElementById(‘timer’).innerText = `${d}D ${h}H ${m}M ${s}S`;
+        }
+        setInterval(updateTimer, 1000);
+
+        async function connectWallet() {
+            if (window.solana && window.solana.isPhantom) {
+                try {
+                    const resp = await window.solana.connect();
+                    localStorage.setItem(‘goasis_wallet’, resp.publicKey.toString());
+                    document.getElementById(‘connect-btn’).classList.add(‘hidden’);
+                    document.getElementById(‘enter-zone’).classList.remove(‘hidden’);
+                    document.getElementById(‘wallet-addr’).innerText = “ID: “ + resp.publicKey.toString().substring(0,8) + “…”;
+                } catch (err) { console.error(err); }
+            } else { alert(“Please install Phantom Wallet.”); }
+        }
+    </script>
+</body>
+</html>
