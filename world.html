@@ -2,61 +2,37 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Goasis Sanctum</title>
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
 </head>
-<body style="margin: 0; overflow: hidden; background: #000;">
+<body style="margin: 0; background-color: #000;">
 
-    <a-scene 
-        loading-screen="dotsColor: #00fff2; backgroundColor: #000"
-        renderer="antialias: false; precision: medium; alpha: false;"
-        vr-mode-ui="enabled: true">
-
-        <a-sky color="#050505"></a-sky>
+    <a-scene background="color: #050505">
         
-        <a-grid static-body material="color: #00fff2; opacity: 0.2; transparent: true;"></a-grid>
-        
-        <a-torus position="0 3 -8" radius="4" tube="0.05" color="#00fff2" 
-                 animation="property: rotation; to: 0 360 0; loop: true; dur: 8000; easing: linear">
+        <a-torus position="0 2.5 -10" radius="5" tube="0.15" color="#00fff2" 
+                 material="emissive: #00fff2; emissiveIntensity: 0.5"
+                 animation="property: rotation; to: 0 360 360; loop: true; dur: 12000; easing: linear">
         </a-torus>
 
-        <a-light type="ambient" color="#444"></a-light>
-        <a-light type="point" position="0 5 -5" intensity="0.8" color="#00fff2"></a-light>
+        <a-grid material="color: #00fff2; opacity: 0.3; transparent: true;"></a-grid>
+        <a-plane rotation="-90 0 0" width="100" height="100" color="#111"></a-plane>
 
-        <a-entity id="rig" position="0 0 0">
-            <a-entity camera look-controls wasd-controls="acceleration: 20" position="0 1.6 0">
-                <a-cursor color="#00fff2" fuse="false"></a-cursor>
-            </a-entity>
+        <a-light type="ambient" intensity="0.6"></a-light>
+        <a-light type="point" position="0 10 -5" intensity="1.5" color="#00fff2"></a-light>
+
+        <a-entity id="rig" position="0 0 5">
+            <a-camera look-controls wasd-controls position="0 1.6 0">
+                <a-cursor color="#00fff2"></a-cursor>
+            </a-camera>
         </a-entity>
 
     </a-scene>
 
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyB8T4-4yxm-tdOMURetwCkpzuAh0cId1fY",
-            authDomain: "goasis-web.firebaseapp.com",
-            databaseURL: "https://goasis-web-default-rtdb.firebaseio.com/",
-            projectId: "goasis-web",
-            storageBucket: "goasis-web.firebasestorage.app",
-            messagingSenderId: "419336849221",
-            appId: "1:419336849221:web:bd93735bba8cd8831fa02c",
-            measurementId: "G-N4N2JW89NV"
-        };
-
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        
-        // Mobile "Wake Up" Audio
-        window.addEventListener('click', function() {
-            var context = new AudioContext();
-            context.resume().then(() => {
-                const msg = new SpeechSynthesisUtterance("Sanctum accessed.");
-                msg.rate = 0.8;
-                window.speechSynthesis.speak(msg);
-            });
+        // Welcome Logic
+        window.addEventListener('click', () => {
+            const msg = new SpeechSynthesisUtterance("Sanctum localized. Grid online.");
+            window.speechSynthesis.speak(msg);
         }, { once: true });
     </script>
 </body>
