@@ -29,36 +29,11 @@
     </a-scene>
 
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyB8T4-4yxm-tdOMURetwCkpzuAh0cId1fY",
-            authDomain: "goasis-web.firebaseapp.com",
-            databaseURL: "https://goasis-web-default-rtdb.firebaseio.com/",
-            projectId: "goasis-web",
-            storageBucket: "goasis-web.firebasestorage.app",
-            messagingSenderId: "419336849221",
-            appId: "1:419336849221:web:bd93735bba8cd8831fa02c",
-            messagingSenderId: "419336849221",
-            measurementId: "G-N4N2JW89NV"
-        };
-        firebase.initializeApp(firebaseConfig);
-
-        // This function "unlocks" the voice on mobile
-        function speak(text) {
-            // Cancel any current speech to clear the 'queue'
-            window.speechSynthesis.cancel();
-            
-            const msg = new SpeechSynthesisUtterance(text);
-            msg.volume = 1; // Max volume
-            msg.rate = 0.9;  // Slightly slower, more robotic
-            msg.pitch = 0.7; // Deeper "JARVIS" tone
-            
-            window.speechSynthesis.speak(msg);
-        }
-
-        // Trigger on any tap
+        // Welcome Logic
         window.addEventListener('click', () => {
-            speak("Sanctum accessed. System online.");
-        }, { once: true }); // Only runs on the first tap
+            const msg = new SpeechSynthesisUtterance("Sanctum localized. Grid online.");
+            window.speechSynthesis.speak(msg);
+        }, { once: true });
     </script>
 </body>
 </html>
