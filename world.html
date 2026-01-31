@@ -4,13 +4,23 @@
     <meta charset="utf-8">
     <title>Goasis Sanctum</title>
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <style>
+        #audio-btn {
+            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+            z-index: 999; padding: 15px 30px; background: rgba(0, 255, 242, 0.2);
+            color: #00fff2; border: 2px solid #00fff2; border-radius: 30px;
+            font-family: monospace; font-weight: bold; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 2px;
+        }
+    </style>
 </head>
 <body style="margin: 0; background-color: #000;">
 
+    <button id="audio-btn" onclick="initAudio()">Enable Audio</button>
+
     <a-scene background="color: #050505">
-        
         <a-assets>
-            <audio id="ping" src="https://cdn.freesound.org/previews/536/536420_4921214-lq.mp3" preload="auto"></audio>
+            <audio id="ping" src="https://cdn.freesound.org/previews/536/536420_4921214-lq.mp3" preload="auto" crossorigin="anonymous"></audio>
         </a-assets>
 
         <a-torus id="main-ring" position="0 2.5 -10" radius="5" tube="0.15" color="#00fff2" 
@@ -27,22 +37,24 @@
     </a-scene>
 
     <script>
-        // Use 'touchstart' instead of 'click' - it's faster and more reliable on mobile
-        window.addEventListener('touchstart', function() {
+        function initAudio() {
             const audio = document.querySelector('#ping');
+            const btn = document.querySelector('#audio-btn');
             
-            // Play the sound
+            // 1. Play the sound immediately
             audio.play().then(() => {
-                // Visual confirmation: Ring blinks white
+                // 2. If it works, hide the button
+                btn.style.display = 'none';
+                
+                // 3. Visual "Sanctum Activated" flash
                 const ring = document.querySelector('#main-ring');
                 ring.setAttribute('material', 'color', '#ffffff');
-                setTimeout(() => {
-                    ring.setAttribute('material', 'color', '#00fff2');
-                }, 150);
-            }).catch(e => {
-                console.log("Audio still blocked by browser");
+                setTimeout(() => { ring.setAttribute('material', 'color', '#00fff2'); }, 300);
+            }).catch(err => {
+                btn.innerHTML = "TAP AGAIN TO SYNC";
+                console.error("Audio Sync Failed:", err);
             });
-        }, { once: false }); // Allow multiple taps
+        }
     </script>
 </body>
 </html>
