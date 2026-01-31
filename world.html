@@ -9,31 +9,40 @@
 
     <a-scene background="color: #050505">
         
-        <a-torus position="0 2.5 -10" radius="5" tube="0.15" color="#00fff2" 
-                 material="emissive: #00fff2; emissiveIntensity: 0.5"
+        <a-assets>
+            <audio id="ping" src="https://cdn.freesound.org/previews/536/536420_4921214-lq.mp3" preload="auto"></audio>
+        </a-assets>
+
+        <a-torus id="main-ring" position="0 2.5 -10" radius="5" tube="0.15" color="#00fff2" 
                  animation="property: rotation; to: 0 360 360; loop: true; dur: 12000; easing: linear">
         </a-torus>
 
-        <a-grid material="color: #00fff2; opacity: 0.3; transparent: true;"></a-grid>
-        <a-plane rotation="-90 0 0" width="100" height="100" color="#111"></a-plane>
+        <a-grid material="color: #00fff2; opacity: 0.2; transparent: true;"></a-grid>
 
-        <a-light type="ambient" intensity="0.6"></a-light>
-        <a-light type="point" position="0 10 -5" intensity="1.5" color="#00fff2"></a-light>
+        <a-camera look-controls wasd-controls position="0 1.6 0">
+            <a-cursor color="#00fff2"></a-cursor>
+        </a-camera>
 
-        <a-entity id="rig" position="0 0 5">
-            <a-camera look-controls wasd-controls position="0 1.6 0">
-                <a-cursor color="#00fff2"></a-cursor>
-            </a-camera>
-        </a-entity>
-
+        <a-light type="ambient" intensity="0.8"></a-light>
     </a-scene>
 
     <script>
-        // Welcome Logic
-        window.addEventListener('click', () => {
-            const msg = new SpeechSynthesisUtterance("Sanctum localized. Grid online.");
-            window.speechSynthesis.speak(msg);
-        }, { once: true });
+        // Use 'touchstart' instead of 'click' - it's faster and more reliable on mobile
+        window.addEventListener('touchstart', function() {
+            const audio = document.querySelector('#ping');
+            
+            // Play the sound
+            audio.play().then(() => {
+                // Visual confirmation: Ring blinks white
+                const ring = document.querySelector('#main-ring');
+                ring.setAttribute('material', 'color', '#ffffff');
+                setTimeout(() => {
+                    ring.setAttribute('material', 'color', '#00fff2');
+                }, 150);
+            }).catch(e => {
+                console.log("Audio still blocked by browser");
+            });
+        }, { once: false }); // Allow multiple taps
     </script>
 </body>
 </html>
