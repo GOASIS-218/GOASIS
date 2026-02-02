@@ -2,86 +2,26 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Goasis Sanctum</title>
-    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <title>Test</title>
     <style>
-        /* This ensures the UI is truly separate from the 3D scene */
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
-        
-        #ui-layer {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000; /* Extremely high priority */
-            background: #000;
+        body { background: #000; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        #test-btn { 
+            width: 80%; 
+            padding: 50px; 
+            background: red; 
+            color: white; 
+            font-size: 30px; 
+            font-weight: bold; 
+            text-align: center;
+            border: 5px solid white;
         }
-
-        #launch-button {
-            padding: 30px 60px;
-            font-size: 20px;
-            font-family: 'Courier New', monospace;
-            background: #00fff2;
-            color: #000;
-            border: none;
-            border-radius: 10px;
-            font-weight: bold;
-            box-shadow: 0 0 30px #00fff2;
-            cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        /* Hide A-Frame until we are ready */
-        a-scene { display: none; }
     </style>
 </head>
 <body>
 
-    <div id="ui-layer">
-        <button id="launch-button" onclick="launch()">INITIALIZE SANCTUM</button>
+    <div id="test-btn" onclick="alert('System Active!')">
+        TAP HERE
     </div>
 
-    <a-scene id="main-scene" background="color: #050505">
-        <a-torus position="0 2.5 -10" radius="5" tube="0.15" color="#00fff2" 
-                 animation="property: rotation; to: 0 360 360; loop: true; dur: 12000; easing: linear">
-        </a-torus>
-        <a-grid material="color: #00fff2; opacity: 0.2; transparent: true;"></a-grid>
-        <a-camera look-controls wasd-controls position="0 1.6 0">
-            <a-cursor color="#00fff2"></a-cursor>
-        </a-camera>
-        <a-light type="ambient" intensity="1"></a-light>
-    </a-scene>
-
-    <script>
-        function launch() {
-            // 1. Remove the entire UI layer from existence
-            const ui = document.getElementById('ui-layer');
-            ui.parentNode.removeChild(ui);
-
-            // 2. Reveal the 3D scene
-            const scene = document.getElementById('main-scene');
-            scene.style.display = 'block';
-
-            // 3. Kickstart the Audio (Beep only for safety)
-            try {
-                const ctx = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start();
-                osc.stop(ctx.currentTime + 0.2);
-            } catch (e) { }
-
-            // 4. Attempt Speech (Optional)
-            if ('speechSynthesis' in window) {
-                const msg = new SpeechSynthesisUtterance("Sanctum Online");
-                window.speechSynthesis.speak(msg);
-            }
-        }
-    </script>
 </body>
 </html>
