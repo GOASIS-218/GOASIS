@@ -2,26 +2,64 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goasis Sanctum</title>
     <style>
-        body { background: #000; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        #test-btn { 
-            width: 80%; 
-            padding: 50px; 
-            background: red; 
-            color: white; 
-            font-size: 30px; 
-            font-weight: bold; 
-            text-align: center;
-            border: 5px solid white;
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; }
+        
+        /* The "Red Box" logic that we know works */
+        #launch-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            background: #000; z-index: 9999;
         }
+
+        #launch-btn {
+            width: 80%; padding: 40px; background: #00fff2; color: #000;
+            font-family: monospace; font-size: 20px; font-weight: bold;
+            text-align: center; border: none; border-radius: 15px;
+            box-shadow: 0 0 20px #00fff2;
+        }
+
+        /* Hide 3D until the button is pressed */
+        #sc-container { display: none; }
     </style>
 </head>
 <body>
 
-    <div id="test-btn" onclick="alert('System Active!')">
-        TAP HERE
+    <div id="launch-layer">
+        <button id="launch-btn" onclick="startSystem()">INITIALIZE SANCTUM</button>
     </div>
 
+    <div id="sc-container">
+        <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+        
+        <a-scene background="color: #050505">
+            <a-torus position="0 2.5 -10" radius="5" tube="0.15" color="#00fff2" 
+                     animation="property: rotation; to: 0 360 360; loop: true; dur: 12000; easing: linear">
+            </a-torus>
+            <a-grid material="color: #00fff2; opacity: 0.2; transparent: true;"></a-grid>
+            <a-camera look-controls wasd-controls position="0 1.6 0">
+                <a-cursor color="#00fff2"></a-cursor>
+            </a-camera>
+            <a-light type="ambient" intensity="1"></a-light>
+        </a-scene>
+    </div>
+
+    <script>
+        function startSystem() {
+            // 1. Hide the button layer
+            document.getElementById('launch-layer').style.display = 'none';
+            
+            // 2. Show the 3D container
+            document.getElementById('sc-container').style.display = 'block';
+
+            // 3. Try the Neural Voice
+            if ('speechSynthesis' in window) {
+                const msg = new SpeechSynthesisUtterance("Neural link active.");
+                window.speechSynthesis.speak(msg);
+            }
+        }
+    </script>
 </body>
 </html>
